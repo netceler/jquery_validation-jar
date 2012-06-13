@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.jquery</groupId>
+    <artifactId>jquery.validation</artifactId>
+    <name>jquery Validation</name>
+    <version>1.9.0</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jqueryvalidation.version>1.9.0</jqueryvalidation.version>
+        <jqueryvalidation.sourceUrl>http://jquery.bassistance.de/validate</jqueryvalidation.sourceUrl>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0-beta-4</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${jqueryvalidation.sourceUrl}</url>
+                            <fromFile>jquery-validation-${jqueryvalidation.version}.zip</fromFile>
+                            <toFile>${project.build.directory}/jquery-validation.zip</toFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <target>
+                                <echo message="unzip archive" />
+                                <unzip src="${project.build.directory}/jquery-validation.zip" dest="${project.build.directory}/jquery-validation" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+       </plugins>
+
+      <resources>
+          <resource>
+              <directory>target/jquery-validation/jquery-validation-${jqueryvalidation.version}</directory>
+              <targetPath>public</targetPath>
+              <includes>
+                  <include>*.js</include>
+                  <include>localization/*.js</include>
+              </includes>
+          </resource>
+          <resource>
+              <directory>target/jquery-validation/jquery-validation-${jqueryvalidation.version}/lib</directory>
+              <targetPath>public</targetPath>
+              <includes>
+                  <include>jquery.form.js</include>
+                  <include>jquery.metadata.js</include>
+                  <include>jquery.mockjax.js</include>
+              </includes>
+          </resource>
+      </resources>
+    </build>
+</project>
